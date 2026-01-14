@@ -23,8 +23,6 @@ The project is designed with a **clean architecture, modular Shiny structure, re
 - 🔁 Fully reproducible R environment (`renv`)  
 - 🚀 Ready for deployment (`shinyapps.io` / Shiny Server)
 
----
-
 ## Project Architecture
 
 ### Core Application
@@ -34,10 +32,7 @@ The project is designed with a **clean architecture, modular Shiny structure, re
 - **modules/**     # Shiny modules (scalable, maintainable architecture)
 - **www/**         # Static assets (CSS, JS, images)
 
-- ✔️ Single entry point simplifies deployment
-- ✔️ Explicit modularization supports scalability and team development
-
-Data & Spatial Layer
+## Data & Spatial Layer
 
 - **data/**        # Processed, lightweight analytical datasets
 - **geo/**         # Spatial objects (sf-compatible)
@@ -54,16 +49,12 @@ The repository contains optimized, portable objects:
 
 This ensures fast startup, portability, and clean version control.
 
-Reproducibility & Environment Management
+## Reproducibility & Environment Management
 
 - renv/
 - renv.lock    # Locked dependency graph
 - .Rprofile    # Automatic renv bootstrap
 - .gitignore   # Clean separation of code vs artifacts
-
-- ✔️ Fully reproducible R environment
-- ✔️ Deterministic dependency resolution
-- ✔️ Production-grade setup for collaboration and deployment
 
 ## 🧰 Technology Stack
 
@@ -76,19 +67,15 @@ The application is built using a modern and robust analytics stack:
 - **Git / GitHub** — version control and collaboration  
 - **Shinyapps.io** — production-ready deployment platform  
 
-
-
 ## 🎯 Typical Use Cases
 
 This project is suitable for a wide range of applied analytical contexts, including:
 
-- **Socio-territorial diagnostics**
-- **Municipal and regional analysis**
-- **Education and labor market segmentation**
-- **Policy-oriented analytical dashboards**
-- **Applied academic and institutional research**
-
----
+- Socio-territorial diagnostics
+- Municipal and regional analysis
+- Education and labor market segmentation
+- Policy-oriented analytical dashboards
+- Applied academic and institutional research
 
 ## 👤 Author
 
@@ -98,3 +85,4 @@ Developed by a **sociologist and data analyst/programmer**, combining:
 - Applied territorial and spatial analysis  
 - Production-grade R and Shiny engineering  
 
+---
