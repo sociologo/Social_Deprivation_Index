@@ -1,7 +1,6 @@
 # Social Deprivation Index (SDI) in Chile  
 
-Christian Castro
-
+Christian Castro<br>
 c.castro.n@proton.me
 
 ### CENSO 2024 · R Shiny Application
