@@ -1,10 +1,14 @@
-# RStudio
+# --- R / RStudio ---
 .Rproj.user/
-.RDataTmp*
 .Rhistory
 .RData
+.RDataTmp*
+.Ruserdata
 
-# Cartografía
+# --- Shiny deploy ---
+rsconnect/
+
+# --- Cartografía / GIS ---
 *.gdb/
 *.shp
 *.shx
@@ -12,7 +16,17 @@
 *.prj
 *.sbn
 *.sbx
+*.cpg
+*.shp.xml
 
-# Datos pesados
+# --- Datos pesados ---
 *.xls
 *.xlsx
+*.csv
+*.sav
+*.dta
+
+# --- Cache / temporales ---
+cache/
+tmp/
+.Rprofile
