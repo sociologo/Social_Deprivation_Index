@@ -1,0 +1,158 @@
+/* =========================
+   KPI GRID
+   ========================= */
+
+.kpi-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+/* =========================
+   KPI CARD
+   ========================= */
+
+.kpi-card {
+  position: relative;
+  background: #0F2B3C;
+  color: #ffffff;
+  border-radius: 12px;
+  padding: 14px 16px;
+  box-shadow: 0 4px 10px rgba(0,0,0,.15);
+  cursor: default;
+
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    background-color 0.18s ease;
+}
+
+.kpi-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.28);
+  background-color: #12384f;
+}
+
+/* =========================
+   KPI CONTENT
+   ========================= */
+
+.kpi-title {
+  font-size: 13px;
+  opacity: 0.85;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.kpi-value {
+  font-size: 28px;
+  font-weight: 700;
+  margin-top: 6px;
+}
+
+.kpi-help {
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+/* Atenuar contenido cuando aparece tooltip */
+.kpi-card:hover .kpi-title,
+.kpi-card:hover .kpi-value,
+.kpi-card:hover .kpi-help {
+  opacity: 0.18;
+  transition: opacity 0.2s ease;
+}
+
+/* =========================
+   KPI TOOLTIP (FLYOUT ELEGANTE)
+   ========================= */
+
+.kpi-tooltip {
+  position: absolute;
+
+  /* Arriba + derecha, superpuesto */
+  top: -14px;
+  right: -14px;
+
+  width: 240px;
+  padding: 14px 16px;
+
+  background: rgba(27, 58, 75, 0.96);
+  color: #ffffff;
+  border-radius: 12px;
+
+  font-size: 13px;
+  line-height: 1.45;
+
+  opacity: 0;
+  transform: translate(8px, 8px);
+  pointer-events: none;
+
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease;
+
+  box-shadow: 0 12px 28px rgba(0,0,0,0.35);
+  z-index: 50;
+}
+
+/* Mostrar tooltip */
+.kpi-card:hover .kpi-tooltip {
+  opacity: 1;
+  transform: translate(0, 0);
+}
+
+/* =========================
+   INSIGHT TEXT
+   ========================= */
+
+.insight-text {
+  margin-top: 12px;
+  padding: 10px 14px;
+  background: #F4F6F8;
+  border-left: 4px solid #1b3a4b;
+  border-radius: 6px;
+  font-size: 14px;
+  line-height: 1.4;
+  color: #1b3a4b;
+}
+
+/* =========================
+   RESPONSIVE
+   ========================= */
+
+/* Tablet */
+@media (max-width: 992px) {
+  .kpi-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+
+  .kpi-tooltip {
+    position: relative;
+    top: auto;
+    right: auto;
+    margin-top: 10px;
+    width: 100%;
+    transform: none;
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .kpi-card:hover .kpi-title,
+  .kpi-card:hover .kpi-value,
+  .kpi-card:hover .kpi-help {
+    opacity: 1;
+  }
+
+  .kpi-value {
+    font-size: 22px;
+  }
+}
+
+

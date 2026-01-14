@@ -1,0 +1,18 @@
+# RStudio
+.Rproj.user/
+.RDataTmp*
+.Rhistory
+.RData
+
+# Cartografía
+*.gdb/
+*.shp
+*.shx
+*.dbf
+*.prj
+*.sbn
+*.sbx
+
+# Datos pesados
+*.xls
+*.xlsx
