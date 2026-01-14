@@ -1,11 +1,12 @@
-# Socio-Spatial Analytics Chile  
-### CASEN 2022 / 2024 · R Shiny Application
+# Social Deprivation Index (SDI) in Chile  
+
+### CENSO 2024 · R Shiny Application
 
 ## Overview
 
-This repository contains a **production-ready R Shiny application** for **socio-spatial analysis of social indicators in Chile**, built on **CASEN 2022/2024** survey data and **census cartography**.
+This repository contains a **production-ready R Shiny application** for **socio-spatial analysis of social indicators in Chile**, built on **CENSO 2024** survey data and **census cartography**.
 
-The project is designed with a **clean architecture, modular Shiny structure, reproducible environment, and deployment readiness**, following best practices expected in professional data science and analytics teams.
+The project is designed with a **clean architecture, modular Shiny structure, reproducible environment, and deployment readiness**.
 
 ---
 
@@ -46,9 +47,7 @@ Heavy and non-portable sources are used only for preprocessing
 The repository contains optimized, portable objects:
 
 .rds
-
 .qs
-
 .gpkg
 
 This ensures fast startup, portability, and clean version control.
@@ -61,43 +60,39 @@ renv.lock    # Locked dependency graph
 .gitignore   # Clean separation of code vs artifacts
 
 ✔️ Fully reproducible R environment
-
 ✔️ Deterministic dependency resolution
-
 ✔️ Production-grade setup for collaboration and deployment
 
-Technology Stack
+## 🧰 Technology Stack
 
-R
+The application is built using a modern and robust analytics stack:
 
-Shiny
+- **R** — statistical computing and data analysis  
+- **Shiny** — interactive web applications  
+- **sf** — spatial data handling and geospatial analysis  
+- **renv** — reproducible dependency management  
+- **Git / GitHub** — version control and collaboration  
+- **Shinyapps.io** — production-ready deployment platform  
 
-sf / spatial data
+---
 
-renv
+## 🎯 Typical Use Cases
 
-Git / GitHub
+This project is suitable for a wide range of applied analytical contexts, including:
 
-Shinyapps.io (deployment-ready)
+- **Socio-territorial diagnostics**
+- **Municipal and regional analysis**
+- **Education and labor market segmentation**
+- **Policy-oriented analytical dashboards**
+- **Applied academic and institutional research**
 
-Typical Use Cases
+---
 
-Socio-territorial diagnostics
+## 👤 Author
 
-Municipal and regional analysis
+Developed by a **sociologist and data analyst/programmer**, combining:
 
-Education and labor market segmentation
+- Quantitative social science expertise  
+- Applied territorial and spatial analysis  
+- Production-grade R and Shiny engineering  
 
-Policy-oriented dashboards
-
-Applied academic research
-
-Author
-
-Developed by a sociologist and data analyst/programmer, combining:
-
-Quantitative social science
-
-Applied territorial analysis
-
-Production-grade R and Shiny engineering
