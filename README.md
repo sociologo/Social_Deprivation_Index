@@ -25,7 +25,6 @@ The project is designed with a **clean architecture, modular Shiny structure, re
 
 ### Core Application
 
-```text
 app.R        # Single entry point (deployment-friendly)
 global.R     # Global configuration, shared objects, data loading
 modules/     # Shiny modules (scalable, maintainable architecture)
@@ -74,7 +73,7 @@ The application is built using a modern and robust analytics stack:
 - **Git / GitHub** — version control and collaboration  
 - **Shinyapps.io** — production-ready deployment platform  
 
----
+
 
 ## 🎯 Typical Use Cases
 
