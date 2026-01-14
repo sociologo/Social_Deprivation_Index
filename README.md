@@ -25,38 +25,37 @@ The project is designed with a **clean architecture, modular Shiny structure, re
 
 ### Core Application
 
-app.R        # Single entry point (deployment-friendly)
-global.R     # Global configuration, shared objects, data loading
-modules/     # Shiny modules (scalable, maintainable architecture)
-www/         # Static assets (CSS, JS, images)
+- **app.R**        # Single entry point (deployment-friendly)
+- **global.R**     # Global configuration, shared objects, data loading
+- **modules/**     # Shiny modules (scalable, maintainable architecture)
+- **www/**         # Static assets (CSS, JS, images)
 
 ✔️ Single entry point simplifies deployment
-
 ✔️ Explicit modularization supports scalability and team development
 
 Data & Spatial Layer
 
-data/        # Processed, lightweight analytical datasets
-geo/         # Spatial objects (sf-compatible)
+- **data/**        # Processed, lightweight analytical datasets
+- **geo/**         # Spatial objects (sf-compatible)
 
-Raw census cartography (.gdb) is intentionally excluded from Git
+**Raw census cartography (.gdb) is intentionally excluded from Git**
 
 Heavy and non-portable sources are used only for preprocessing
 
 The repository contains optimized, portable objects:
 
-.rds
-.qs
-.gpkg
+- .rds
+- .qs
+- .gpkg
 
 This ensures fast startup, portability, and clean version control.
 
 Reproducibility & Environment Management
 
-renv/
-renv.lock    # Locked dependency graph
-.Rprofile    # Automatic renv bootstrap
-.gitignore   # Clean separation of code vs artifacts
+- renv/
+- renv.lock    # Locked dependency graph
+- .Rprofile    # Automatic renv bootstrap
+- .gitignore   # Clean separation of code vs artifacts
 
 ✔️ Fully reproducible R environment
 ✔️ Deterministic dependency resolution
