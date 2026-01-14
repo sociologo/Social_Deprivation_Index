@@ -16,12 +16,12 @@ The project is designed with a **clean architecture, modular Shiny structure, re
 
 ## Key Features
 
-- 📊 Interactive socio-spatial dashboards  
-- 🗺️ Territorial analysis using census cartography  
-- 🎓 Education and labor segregation indicators  
-- ⚙️ Modular Shiny architecture for scalability  
-- 🔁 Fully reproducible R environment (`renv`)  
-- 🚀 Ready for deployment (`shinyapps.io` / Shiny Server)
+- Interactive socio-spatial dashboards  
+- Territorial analysis using census cartography  
+- Education and labor segregation indicators  
+- Modular Shiny architecture for scalability  
+- Fully reproducible R environment (`renv`)  
+- Ready for deployment (`shinyapps.io` / Shiny Server)
 
 ## Project Architecture
 
@@ -56,7 +56,7 @@ This ensures fast startup, portability, and clean version control.
 - .Rprofile    # Automatic renv bootstrap
 - .gitignore   # Clean separation of code vs artifacts
 
-## 🧰 Technology Stack
+## Technology Stack
 
 The application is built using a modern and robust analytics stack:
 
@@ -67,7 +67,7 @@ The application is built using a modern and robust analytics stack:
 - **Git / GitHub** — version control and collaboration  
 - **Shinyapps.io** — production-ready deployment platform  
 
-## 🎯 Typical Use Cases
+## Typical Use Cases
 
 This project is suitable for a wide range of applied analytical contexts, including:
 
@@ -77,7 +77,7 @@ This project is suitable for a wide range of applied analytical contexts, includ
 - Policy-oriented analytical dashboards
 - Applied academic and institutional research
 
-## 👤 Author
+## Author
 
 Developed by a **sociologist and data analyst/programmer**, combining:
 
