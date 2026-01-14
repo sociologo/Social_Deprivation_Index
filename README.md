@@ -1,5 +1,9 @@
 # Social Deprivation Index (SDI) in Chile  
 
+Christian Castro
+
+c.castro.n@proton.me
+
 ### CENSO 2024 · R Shiny Application
 
 ## Overview
@@ -30,8 +34,8 @@ The project is designed with a **clean architecture, modular Shiny structure, re
 - **modules/**     # Shiny modules (scalable, maintainable architecture)
 - **www/**         # Static assets (CSS, JS, images)
 
-✔️ Single entry point simplifies deployment
-✔️ Explicit modularization supports scalability and team development
+- ✔️ Single entry point simplifies deployment
+- ✔️ Explicit modularization supports scalability and team development
 
 Data & Spatial Layer
 
@@ -57,9 +61,9 @@ Reproducibility & Environment Management
 - .Rprofile    # Automatic renv bootstrap
 - .gitignore   # Clean separation of code vs artifacts
 
-✔️ Fully reproducible R environment
-✔️ Deterministic dependency resolution
-✔️ Production-grade setup for collaboration and deployment
+- ✔️ Fully reproducible R environment
+- ✔️ Deterministic dependency resolution
+- ✔️ Production-grade setup for collaboration and deployment
 
 ## 🧰 Technology Stack
 
