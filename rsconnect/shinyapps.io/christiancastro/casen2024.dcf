@@ -5,6 +5,9 @@ account: christiancastro
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 16421647
-bundleId: 11441199
+bundleId: 11445790
 url: https://christiancastro.shinyapps.io/casen2024/
 version: 1
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: Cartografía_censo2024_R13.gdb

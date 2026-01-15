@@ -1,0 +1,9 @@
+renv/
+.Rproj.user
+.Rhistory
+.RData
+node_modules/
+__pycache__/
+.cache/
+
+
