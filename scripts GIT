@@ -1,0 +1,69 @@
+estoy trabajando sobre una app shiny en Rstudio en la rama shiny-3. 
+Quiero borrarla, y crear una nueva llamada shiny-4 con el contenido del main. 
+dime que hago en git bash
+
+1 Cambia a main
+2 Verifica que main esté limpio y correcto:
+3 Borra la rama shiny-3 si ya no la necesitas y aceptas perder sus commits:
+4 Crea la nueva rama shiny-4 desde main
+5 Sube la rama nueva al remoto
+6 Verificación rápida
+
+git checkout main
+git status
+git branch -D "shiny-3"
+git checkout -b "shiny-4"
+git push -u origin "shiny-4"
+git branch
+
+#######################
+#######################
+
+shiny-4 es la versión correcta y quieres que sea main
+
+(el más común)
+
+# 1. Ir a la rama shiny-4
+git checkout shiny-4
+
+# 2. Asegurarte de que esté actualizada
+git pull origin shiny-4
+
+# 3. Renombrar la rama local shiny-4 → main
+git branch -M main
+
+# 4. Subir main y sobrescribir la referencia remota
+git push -u origin main --force
+
+#######################
+#######################
+
+
+Para actualizar tu rama main en GitHub, asumiendo que ya tienes main correcta en local, estos son los pasos exactos y seguros.
+
+✅ Caso más común: subir tu main local a GitHub
+1️⃣ Verifica que estás en main
+git branch
+
+
+Debe aparecer:
+
+* main
+
+
+Si no:
+
+git checkout main
+
+2️⃣ Verifica qué vas a subir
+git status
+
+
+Si hay cambios sin commitear:
+
+git add .
+git commit -m "Actualiza main con versión estable shiny-4"
+
+3️⃣ Sube main a GitHub
+git push origin main
+

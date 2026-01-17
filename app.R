@@ -2,6 +2,11 @@
 # SocioSpatial Analytics – Chile
 # ==========================================
 
+
+# Este archivo NO debe contener lógica cartográfica fina.
+
+
+
 # ── librerías ─────────────────────────────
 library(shiny)
 library(shinyjs)
@@ -26,7 +31,7 @@ source("global.R")
 data_loaded <- FALSE
 
 ui <- page_navbar(
-  
+  id = "main_tabs",
   title = "SocioSpatial Analytics – Chile",
   
   theme = bs_theme(
@@ -36,7 +41,7 @@ ui <- page_navbar(
   ),
   
   tags$head(
-    tags$link(rel = "stylesheet", type = "text/css", href = "styles.css")
+    tags$link(rel = "stylesheet", type = "text/css", href = "styles.css"),
   ),
 
   
@@ -56,8 +61,11 @@ ui <- page_navbar(
         mod_indicadores_ui("indicadores")
       ),
       
-      mod_map_escolaridad_ui("map1") |> 
-        withSpinner(type = 4)
+      card(
+        height = "800px",
+        mod_map_escolaridad_ui("map1") |> 
+          withSpinner(type = 4)
+      )
     )
   ),
   
@@ -80,8 +88,13 @@ ui <- page_navbar(
   
   nav_panel(
     "Exclusión laboral",
-    mod_map_exclusion_ui("map2") |> 
-      withSpinner(type = 4)
+    
+    card(
+      height = "800px",
+      
+      mod_map_exclusion_ui("map2") |> 
+        withSpinner(type = 4)
+    )
   ),
   
   # ============================
@@ -238,45 +251,217 @@ ui <- page_navbar(
 
 server <- function(input, output, session) {
   
-  if (!data_loaded) {
-    tryCatch({
-      init_data()
-      data_loaded <<- TRUE
-    }, error = function(e) {
-      stop("Error cargando datos: ", e$message)
-    })
-  }
+
   
+  # ── carga de datos ───────────────────────
+  # carga de datos
+  init_data()
+  
+  # ── filtros ─────────────────────────────
   comunas_sel <- mod_filters_server("filtros")
   
-  # Overlay cuando cambian comunas
-  observeEvent(comunas_sel(), {
-    shinyjs::show("loading")
-  }, ignoreInit = FALSE)
-  
-  # Datos mapa educativo
+  # ── datos mapa educativo ─────────────────
   data_map <- eventReactive(comunas_sel(), {
-    req(comunas_sel())
     req(length(comunas_sel()) > 0)
     get_comunas_mapa(comunas_sel())
-  }, ignoreInit = FALSE)
+  })
   
-  # Mapa educativo
-  mod_map_escolaridad_server("map1", data_map, comunas_sel, reactive(input$modo_seg))
   
-  # Mapa exclusión laboral
+  observe({
+    cat(
+      "\n[CHECK TAB]",
+      "exists =", !is.null(input$main_tabs),
+      "| value = <", isolate(input$main_tabs), ">\n"
+    )
+
+    observe({
+      w <- session$clientData$output_map1_map_width
+      h <- session$clientData$output_map1_map_height
+
+      cat(
+        "\n[CHECK MAP DOM]",
+        "width =", ifelse(is.null(w), "NULL", w),
+        "| height =", ifelse(is.null(h), "NULL", h),
+        "\n"
+      )
+    })
+
+    observeEvent(data_map(), {
+      df <- data_map()
+
+      cat(
+        "\n[CHECK DATA]",
+        "nrow =", nrow(df),
+        "| CRS =", sf::st_crs(df)$epsg,
+        "\n"
+      )
+    })
+
+    observeEvent(data_map(), {
+      bbox <- sf::st_bbox(data_map())
+
+      cat(
+        "\n[CHECK BBOX]",
+        "xmin =", bbox["xmin"],
+        "| ymin =", bbox["ymin"],
+        "| xmax =", bbox["xmax"],
+        "| ymax =", bbox["ymax"],
+        "\n"
+      )
+    })
+    
+
+    
+  #### =========================
+  #### TESTS ZOOM / TIMING LEAFLET
+  #### =========================
+  
+  # 1️⃣ Cambio de tab (confirma visibilidad real del panel)
+  observeEvent(input$main_tabs, {
+    cat(
+      "\n[TEST TAB CHANGE]",
+      "tab =", input$main_tabs,
+      "| time =", Sys.time(),
+      "\n"
+    )
+  }, ignoreInit = TRUE)
+  
+  # 2️⃣ DOM del mapa: tamaño real (CLAVE)
+  observeEvent(
+    session$clientData$output_map1_map_width,
+    {
+      cat(
+        "\n[DOM READY]",
+        "width =", session$clientData$output_map1_map_width,
+        "| height =", session$clientData$output_map1_map_height,
+        "| time =", Sys.time(),
+        "\n"
+      )
+    },
+    ignoreInit = TRUE
+  )
+  
+  # 3️⃣ Datos espaciales listos
+  observeEvent(data_map(), {
+    cat(
+      "\n[DATA READY]",
+      "nrow =", nrow(data_map()),
+      "| CRS =", sf::st_crs(data_map())$epsg,
+      "| time =", Sys.time(),
+      "\n"
+    )
+  }, ignoreInit = TRUE)
+  
+  # 4️⃣ Bounding box calculada correctamente
+  observeEvent(data_map(), {
+    bb <- sf::st_bbox(data_map())
+    cat(
+      "\n[BBOX READY]",
+      "xmin =", bb["xmin"],
+      "| ymin =", bb["ymin"],
+      "| xmax =", bb["xmax"],
+      "| ymax =", bb["ymax"],
+      "| time =", Sys.time(),
+      "\n"
+    )
+  }, ignoreInit = TRUE)
+  
+  # 5️⃣ Leaflet emite bounds (confirma que el mapa EXISTE)
+  observeEvent(input$map1_bounds, {
+    cat(
+      "\n[LEAFLET BOUNDS EMITTED]",
+      paste(unlist(input$map1_bounds), collapse = ", "),
+      "| time =", Sys.time(),
+      "\n"
+    )
+  }, ignoreInit = TRUE)
+  
+  # 6️⃣ Sincronización crítica: DOM + datos listos
+  observeEvent(
+    list(
+      session$clientData$output_map1_map_width,
+      data_map()
+    ),
+    {
+      cat(
+        "\n[TIMING CHECK OK]",
+        "width =", session$clientData$output_map1_map_width,
+        "| rows =", nrow(data_map()),
+        "| time =", Sys.time(),
+        "\n"
+      )
+    },
+    ignoreInit = TRUE
+  )
+  
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+  })
+  
+  
+  
+  
+  
+  
+  
+  resumen_comunal <- reactive({
+    df <- data_map()
+    req(nrow(df) > 0)
+    
+    df %>%
+      st_drop_geometry() %>%
+      group_by(COMUNA) %>%
+      summarise(
+        P10 = quantile(escolaridad_disc, 0.10, na.rm = TRUE),
+        P90 = quantile(escolaridad_disc, 0.90, na.rm = TRUE),
+        .groups = "drop"
+      )
+  })
+  
+  # ── MAPA EDUCATIVO ───────────────────────
+  mod_map_escolaridad_server(
+    "map1",
+    manzanas_sf     = data_map,
+    resumen_comunal = resumen_comunal,
+    modo_seg        = reactive(input$modo_seg)
+  )
+  
+
+  
+  
+  
+  # ── otros módulos ────────────────────────
   data_excl <- eventReactive(comunas_sel(), {
-    req(comunas_sel())
-    manzanas_exclusion %>%
-      filter(COMUNA %in% comunas_sel())
+    manzanas_exclusion %>% filter(COMUNA %in% comunas_sel())
   })
   
   mod_map_exclusion_server("map2", data_excl, comunas_sel)
-  
-  # Indicadores y tabla
   mod_indicadores_server("indicadores", data_map)
   mod_comparacion_server("tabla1", data_map)
-  
   
   output$texto_sdi <- renderUI({
     HTML("

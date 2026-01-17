@@ -2,6 +2,17 @@
 # NADA que ejecute lógica pesada puede vivir en global.R
 # Este archivo NO ejecuta lógica, solo define dependencias y funciones.
 
+# global.R solo puede:
+#   
+#  cargar librerías
+#  definir funciones PURAS
+#  definir constantes
+#  hacer source() de archivos que solo definen funciones
+#  global.R NUNCA debe ejecutar código que cree datos
+
+
+
+
 # ── librerías ─────────────────────────────
 library(shiny)
 library(shinyjs)
@@ -28,4 +39,4 @@ source("R/filters.R")
 source("modules/mod_map_escolaridad.R")
 source("modules/mod_filters.R")
 source("modules/mod_indicadores.R")
-source("R/init_data.R")
+# source("R/init_data.R")
