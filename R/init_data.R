@@ -1,3 +1,21 @@
+
+# script de inicialización controlada
+
+# La función init_data() ejecuta la fase 
+#    de inicialización pesada de la aplicación.
+# Se ejecuta una sola vez al arranque y 
+#    construye objetos globales cacheados, no reactivos.
+
+# # init_data.R
+# ------------------------------------------------
+# Fase de inicialización pesada del sistema.
+# Crea objetos globales cacheados:
+# - manzanas_exclusion
+# - manzanas_pre
+# - resumen_comunal_cache
+# ------------------------------------------------
+
+
 # ==========================================
 # Inicialización de datos y caches globales
 # ==========================================
@@ -5,31 +23,26 @@
 init_data <- function() {
   
   message("Inicializando datos socioespaciales...")
-  
-  # ── carga base ───────────────────────────
   load_all_data()
   
-  # ── limpieza de columnas ────────────────
   names(manzanas)[names(manzanas) == "" | is.na(names(manzanas))] <- "X_vacio"
   
-  # ============================================================
-  # 1️⃣ Exclusión laboral por manzana (CPV24)
-  # ============================================================
+  manzanas <<- manzanas %>%
+    mutate(COMUNA = trimws(toupper(COMUNA)))
   
+  # ── exclusión laboral ──────────────────
   message("Calculando exclusión laboral...")
   
   manzanas_exclusion <<- manzanas %>%
     mutate(
-      COMUNA = trimws(toupper(COMUNA)),
-      
       total_laboral = n_ocupado + n_desocupado + n_fuera_fuerza_trabajo,
-      
-      porc_excl_lab = ifelse(
-        total_laboral > 0,
-        (n_desocupado + n_fuera_fuerza_trabajo) / total_laboral,
-        NA_real_
-      ),
-      
+      porc_excl_lab = {
+        out <- NA_real_
+        idx <- total_laboral > 0
+        out[idx] <- 
+          (n_desocupado[idx] + n_fuera_fuerza_trabajo[idx]) / total_laboral[idx]
+        out
+      },
       excl_lab_cat = cut(
         porc_excl_lab,
         breaks = c(0, 0.11, 0.345, 0.425, 0.491, 0.6, 1),
@@ -38,38 +51,23 @@ init_data <- function() {
       )
     )
   
-  # ============================================================
-  # 2️⃣ Escolaridad por manzana
-  # ============================================================
-  
+  # ── escolaridad ────────────────────────
   message("Calculando escolaridad por manzana...")
   
   manzanas_pre <<- manzanas %>%
     mutate(
-      COMUNA = trimws(toupper(COMUNA)),
-      
-      escolaridad_disc = pmin(
-        pmax(8.5, floor(prom_escolaridad18 * 2) / 2),
-        17
-      ),
-      
-      escolaridad_col = ifelse(
-        is.na(prom_escolaridad18),
-        8.4,
-        pmin(
-          pmax(8.5, floor(prom_escolaridad18 * 2) / 2),
-          17
-        )
-      )
-    )
+      esc_raw  = floor(prom_escolaridad18 * 2) / 2,
+      esc_clip = pmin(pmax(8.5, esc_raw), 17),
+      escolaridad_disc = esc_clip,
+      escolaridad_col  = ifelse(is.na(prom_escolaridad18), 8.4, esc_clip)
+    ) %>%
+    select(-esc_raw, -esc_clip)
   
-  # ============================================================
-  # 3️⃣ Cache comunal de segregación
-  # ============================================================
-  
+  # ── resumen comunal ────────────────────
   message("Construyendo cache comunal...")
   
   resumen_comunal_cache <<- manzanas_pre %>%
+    select(COMUNA, escolaridad_disc) %>%
     st_drop_geometry() %>%
     group_by(COMUNA) %>%
     summarise(

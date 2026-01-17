@@ -25,87 +25,86 @@ mod_map_escolaridad_server <- function(
     pal <- pal_escolaridad()
     
     # =========================
-    # DATOS
+    # DATOS (LIGEROS)
     # =========================
     datos_mapa <- reactive({
       df <- manzanas_sf()
       req(nrow(df) > 0)
       
-      df2 <- df %>%
-        st_drop_geometry() %>%
+      # join SOLO atributos, sin tocar geometría
+      df <- df |>
         left_join(
-          resumen_comunal() %>% select(COMUNA, P10, P90),
+          resumen_comunal() |> select(COMUNA, P10, P90),
           by = "COMUNA"
         )
       
-      st_as_sf(
-        df2,
-        geometry = st_geometry(df),
-        crs = st_crs(df)
-      )
+      # precalcular colores (CLAVE)
+      df$fill_col <- if (!modo_seg()) {
+        
+        pal(df$escolaridad_disc)
+        
+      } else {
+        
+        dplyr::case_when(
+          is.na(df$escolaridad_disc) |
+            is.na(df$P10) |
+            is.na(df$P90) ~ "#DDDDDD",
+          
+          df$escolaridad_disc <= df$P10 ~ "#2C7FB8",
+          df$escolaridad_disc >= df$P90 ~ "#B10026",
+          TRUE ~ "#DDDDDD"
+        )
+      }
+      
+      df
     })
     
     # =========================
-    # MAPA (PATRÓN QUE FUNCIONA)
+    # MAPA (RENDER EFICIENTE)
     # =========================
     output$map <- renderLeaflet({
       df <- datos_mapa()
       req(nrow(df) > 0)
       
-      leaflet(df) %>%
+      leaflet(
+        df,
+        options = leafletOptions(
+          preferCanvas = TRUE
+        )
+      ) %>%
         addProviderTiles(providers$CartoDB.Positron, group = "Base") %>%
         addProviderTiles(providers$Esri.WorldImagery, group = "Satélite") %>%
         
         addPolygons(
+          fillColor    = ~fill_col,
+          fillOpacity  = 0.8,
+          color        = "#333333",
+          weight       = 0.2,
+          smoothFactor = 0.5,
+          group        = "Escolaridad",
+          
+          # ── TOOLTIP MINIMAL ───────────────────
+          label = ~ifelse(
+            is.na(escolaridad_disc),
+            "Sin dato",
+            paste0(escolaridad_disc, " años")
+          ),
+          
+          labelOptions = labelOptions(
+            direction = "auto",
+            textsize = "12px",
+            opacity = 0.9
+          )
           
           
-          
-          
-          
-          # fillColor = ~ if (modo_seg()) {
-          #   ifelse(
-          #     escolaridad_disc <= P10, "#2C7FB8",
-          #     ifelse(escolaridad_disc >= P90, "#B10026", "#DDDDDD")
-          #   )
-          # } else {
-          #   pal(escolaridad_disc)
-          # }
-          
-          
-          fillColor = ~ if (!modo_seg()) {
-            
-            pal(escolaridad_disc)
-            
-          } else {
-            
-            dplyr::case_when(
-              is.na(escolaridad_disc) | is.na(P10) | is.na(P90) ~ "#DDDDDD",
-              escolaridad_disc <= P10 ~ "#2C7FB8",
-              escolaridad_disc >= P90 ~ "#B10026",
-              TRUE ~ "#DDDDDD"
-            )
-            
-          }
-          
-          
-          
-          
-          
-          ,
-          fillOpacity = 0.8,
-          color = "#333333",
-          weight = 0.3,
-          smoothFactor = 0.3,
-          group = "Escolaridad"
         ) %>%
         
         addLayersControl(
-          baseGroups = c("Base", "Satélite"),
+          baseGroups    = c("Base", "Satélite"),
           overlayGroups = c("Escolaridad"),
-          options = layersControlOptions(collapsed = FALSE)
+          options       = layersControlOptions(collapsed = FALSE)
         )
     })
-    
   })
 }
 

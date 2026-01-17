@@ -19,17 +19,17 @@ git branch
 #######################
 #######################
 
-shiny-4 es la versión correcta y quieres que sea main
+shiny-5 es la versión correcta y quieres que sea main
 
 (el más común)
 
-# 1. Ir a la rama shiny-4
-git checkout shiny-4
+# 1. Ir a la rama shiny-5
+git checkout shiny-5
 
 # 2. Asegurarte de que esté actualizada
-git pull origin shiny-4
+git pull origin shiny-5
 
-# 3. Renombrar la rama local shiny-4 → main
+# 3. Renombrar la rama local shiny-5 → main
 git branch -M main
 
 # 4. Subir main y sobrescribir la referencia remota
